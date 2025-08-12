@@ -38,18 +38,18 @@ outputs:
       - lib/libcufft*.so.*                            # [linux]
       - targets/{{ target_name }}/lib/libcufft*.so.*  # [linux]
       - Library\bin\cufft*64_*.dll                    # [win]
-    requirements:
-      build:
-        - {{ compiler("c") }}
-        - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - {{ stdlib("c") }}
     # Repacked binaries on linux aarch64 have flag DT_TLSDESC (GNU_HASH),
     # which is not supported by LIEF and can raise ValueError during
     # overlinking checks. Use specific patterns from files section.
     overlinking_ignore_patterns:  # [linux and aarch64]
       - "targets/{{ target_name }}/lib/libcufft*.so*"  # [linux and aarch64]
       - "lib/libcufft*.so*"  # [linux and aarch64]
+    requirements:
+      build:
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -96,6 +96,13 @@ outputs:
       - targets/{{ target_name }}/lib/stubs/libcufft*.so  # [linux]
       - Library\include                                   # [win]
       - Library\lib                                       # [win]
+        # Repacked binaries on linux aarch64 have flag DT_TLSDESC (GNU_HASH),
+    # which is not supported by LIEF and can raise ValueError during
+    # overlinking checks. Use specific patterns from files section.
+    overlinking_ignore_patterns:  # [linux and aarch64]
+      - "targets/{{ target_name }}/lib/libcufft*.so*"  # [linux and aarch64]
+      - "targets/{{ target_name }}/lib/stubs/libcufft*.so*"  # [linux and aarch64]
+      - "lib/libcufft*.so*"  # [linux and aarch64]
     requirements:
       build:
         - {{ compiler("c") }}
