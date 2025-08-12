@@ -28,7 +28,7 @@ for i in *; do
                 # Fix RPATH for all shared libraries (both .so and .so.X.Y.Z files)
                 if [[ $j =~ \.so ]]; then
                     # Enhanced RPATH fixing only for linux-aarch64
-                    if [[ ${target_platform} == "linux-aarch64" ]]; then
+                    if [[ ${target_platform} == "linux-aarch64" ]] || [[ ${target_platform} == "linux-64" ]]; then
                         # Clear any existing RPATH first, then set to $ORIGIN
                         patchelf --remove-rpath ${PREFIX}/${targetsDir}/$j
                         patchelf --set-rpath '$ORIGIN' ${PREFIX}/${targetsDir}/$j
