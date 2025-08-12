@@ -97,8 +97,6 @@ outputs:
       overlinking_ignore_patterns:  # [linux and aarch64]
         - "targets/{{ target_name }}/lib/libcufft*.so*"         # [linux and aarch64]
         - "targets/{{ target_name }}/lib/libcufftw*.so*"        # [linux and aarch64]
-        - "targets/{{ target_name }}/lib/stubs/libcufft*.so*"   # [linux and aarch64]
-        - "targets/{{ target_name }}/lib/stubs/libcufftw*.so*"  # [linux and aarch64]
         - "lib/libcufft*.so*"                                   # [linux and aarch64]
         - "lib/libcufftw*.so*"                                  # [linux and aarch64]
     files:

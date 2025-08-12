@@ -23,21 +23,27 @@ for i in *; do
             for j in "$i"/*.so*; do
                 # Shared libraries are symlinked in $PREFIX/lib
                 ln -s ${PREFIX}/${targetsDir}/$j ${PREFIX}/$j
-
-                if [[ $j =~ \.so\. ]]; then
-                    # Patch only real files (skip symlinks) to have strict RPATH=$ORIGIN and no RUNPATH
-                    if [[ ! -L ${PREFIX}/${targetsDir}/$j ]]; then
-                        patchelf --remove-rpath ${PREFIX}/${targetsDir}/$j || true
-                        patchelf --remove-runpath ${PREFIX}/${targetsDir}/$j || true
-                        patchelf --set-rpath '$ORIGIN' --force-rpath ${PREFIX}/${targetsDir}/$j || true
-                    fi
-                fi
             done
         fi
     else
         # Put all other files in targetsDir
         mkdir -p ${PREFIX}/${targetsDir}/${PKG_NAME}
         cp -rv $i ${PREFIX}/${targetsDir}/${PKG_NAME}
+    fi
+done
+
+# Fix RPATH for all real library files (not symlinks, not stubs)
+for lib in ${PREFIX}/${targetsDir}/lib/*.so*; do
+    # Skip symlinks and stub libraries
+    if [[ -L "$lib" ]] || [[ "$lib" == *"/stubs/"* ]]; then
+        continue
+    fi
+    # Only patch actual library files (not symlinks)
+    if [[ -f "$lib" ]] && [[ "$lib" =~ \.so\. ]]; then
+        echo "Fixing RPATH for: $lib"
+        patchelf --remove-rpath "$lib" || true
+        patchelf --remove-runpath "$lib" || true
+        patchelf --set-rpath '$ORIGIN' --force-rpath "$lib" || true
     fi
 done
 
