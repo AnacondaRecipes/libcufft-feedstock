@@ -33,6 +33,8 @@ for i in *; do
 done
 
 # Fix RPATH for all real library files (not symlinks, not stubs)
+echo "Looking for libraries in: ${PREFIX}/${targetsDir}/lib/"
+ls -la ${PREFIX}/${targetsDir}/lib/ || true
 for lib in ${PREFIX}/${targetsDir}/lib/*.so*; do
     # Skip symlinks and stub libraries
     if [[ -L "$lib" ]] || [[ "$lib" == *"/stubs/"* ]]; then
@@ -41,9 +43,20 @@ for lib in ${PREFIX}/${targetsDir}/lib/*.so*; do
     # Only patch actual library files (not symlinks)
     if [[ -f "$lib" ]] && [[ "$lib" =~ \.so\. ]]; then
         echo "Fixing RPATH for: $lib"
-        patchelf --remove-rpath "$lib" || true
-        patchelf --remove-runpath "$lib" || true
-        patchelf --set-rpath '$ORIGIN' --force-rpath "$lib" || true
+        # First, check current RPATH
+        current_rpath=$(patchelf --print-rpath "$lib" 2>/dev/null || echo "")
+        echo "Current RPATH: '$current_rpath'"
+        
+        # Remove all RPATH entries by setting empty RPATH first
+        patchelf --set-rpath '' "$lib" 2>/dev/null || true
+        patchelf --remove-rpath "$lib" 2>/dev/null || true
+        
+        # Set strict RPATH to $ORIGIN only
+        patchelf --set-rpath '$ORIGIN' --force-rpath "$lib" 2>/dev/null || true
+        
+        # Verify the new RPATH
+        new_rpath=$(patchelf --print-rpath "$lib" 2>/dev/null || echo "")
+        echo "New RPATH: '$new_rpath'"
     fi
 done
 
