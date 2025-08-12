@@ -23,6 +23,14 @@ for i in *; do
             for j in "$i"/*.so*; do
                 # Shared libraries are symlinked in $PREFIX/lib
                 ln -s ${PREFIX}/${targetsDir}/$j ${PREFIX}/$j
+
+                if [[ $j =~ \.so\. ]]; then
+                    # Patch only real files (skip symlinks) to have strict RPATH=$ORIGIN and no RUNPATH
+                    if [[ ! -L ${PREFIX}/${targetsDir}/$j ]]; then
+                        patchelf --remove-rpath ${PREFIX}/${targetsDir}/$j || true
+                        patchelf --set-rpath '$ORIGIN' --force-rpath ${PREFIX}/${targetsDir}/$j || true
+                    fi
+                fi
             done
         fi
     else
@@ -32,32 +40,6 @@ for i in *; do
     fi
 done
 
-# Fix RPATH for all real library files (not symlinks, not stubs)
-echo "Looking for libraries in: ${PREFIX}/${targetsDir}/lib/"
-ls -la ${PREFIX}/${targetsDir}/lib/ || true
-for lib in ${PREFIX}/${targetsDir}/lib/*.so*; do
-    # Skip symlinks and stub libraries
-    if [[ -L "$lib" ]] || [[ "$lib" == *"/stubs/"* ]]; then
-        continue
-    fi
-    # Only patch actual library files (not symlinks)
-    if [[ -f "$lib" ]] && [[ "$lib" =~ \.so\. ]]; then
-        echo "Fixing RPATH for: $lib"
-        # First, check current RPATH
-        current_rpath=$(patchelf --print-rpath "$lib" 2>/dev/null || echo "")
-        echo "Current RPATH: '$current_rpath'"
-        
-        # Remove all RPATH entries by setting empty RPATH first
-        patchelf --set-rpath '' "$lib" 2>/dev/null || true
-        patchelf --remove-rpath "$lib" 2>/dev/null || true
-        
-        # Set strict RPATH to $ORIGIN only
-        patchelf --set-rpath '$ORIGIN' --force-rpath "$lib" 2>/dev/null || true
-        
-        # Verify the new RPATH
-        new_rpath=$(patchelf --print-rpath "$lib" 2>/dev/null || echo "")
-        echo "New RPATH: '$new_rpath'"
-    fi
-done
+
 
 check-glibc "$PREFIX"/lib*/*.so.* "$PREFIX"/bin/* "$PREFIX"/targets/*/lib*/*.so.* "$PREFIX"/targets/*/bin/*
