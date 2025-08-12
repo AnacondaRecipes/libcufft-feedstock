@@ -24,6 +24,7 @@ for i in *; do
             for j in $i/*.so*; do
                 # Shared libraries are symlinked in $PREFIX/lib
                 ln -s ${PREFIX}/${targetsDir}/$j ${PREFIX}/$j
+
                 # Fix RPATH for all shared libraries (both .so and .so.X.Y.Z files)
                 if [[ $j =~ \.so ]]; then
                     # Enhanced RPATH fixing only for linux-aarch64
@@ -48,15 +49,17 @@ done
 
 check-glibc "$PREFIX"/lib*/*.so.* "$PREFIX"/bin/* "$PREFIX"/targets/*/lib*/*.so.* "$PREFIX"/targets/*/bin/*
 
-# Verify all shared libraries have correct RPATH
-for lib in ${PREFIX}/${targetsDir}/lib/*.so*; do
-    if [[ -f "$lib" && "$lib" =~ \.so ]]; then
-        rpath=$(patchelf --print-rpath "$lib" 2>/dev/null || echo "No RPATH")
-        if [[ "$rpath" != "$ORIGIN" ]]; then
-            echo "WARNING: $(basename "$lib") has incorrect RPATH: $rpath"
-            echo "Attempting to fix..."
-            patchelf --remove-rpath "$lib"
-            patchelf --set-rpath '$ORIGIN' "$lib"
+# Verify all shared libraries have correct RPATH (only for linux-aarch64)
+if [[ ${target_platform} == "linux-aarch64" ]]; then
+    for lib in ${PREFIX}/${targetsDir}/lib/*.so*; do
+        if [[ -f "$lib" && "$lib" =~ \.so ]]; then
+            rpath=$(patchelf --print-rpath "$lib" 2>/dev/null || echo "No RPATH")
+            if [[ "$rpath" != "\$ORIGIN" ]]; then
+                echo "WARNING: $(basename "$lib") has incorrect RPATH: $rpath"
+                echo "Attempting to fix..."
+                patchelf --remove-rpath "$lib"
+                patchelf --set-rpath '$ORIGIN' "$lib"
+            fi
         fi
-    fi
-done
+    done
+fi
