@@ -48,17 +48,15 @@ done
 
 check-glibc "$PREFIX"/lib*/*.so.* "$PREFIX"/bin/* "$PREFIX"/targets/*/lib*/*.so.* "$PREFIX"/targets/*/bin/*
 
-# Verify all shared libraries have correct RPATH (only for linux-aarch64)
-if [[ ${target_platform} == "linux-aarch64" ]]; then
-    for lib in ${PREFIX}/${targetsDir}/lib/*.so*; do
-        if [[ -f "$lib" && "$lib" =~ \.so ]]; then
-            rpath=$(patchelf --print-rpath "$lib" 2>/dev/null || echo "No RPATH")
-            if [[ "$rpath" != "$ORIGIN" ]]; then
-                echo "WARNING: $(basename "$lib") has incorrect RPATH: $rpath"
-                echo "Attempting to fix..."
-                patchelf --remove-rpath "$lib"
-                patchelf --set-rpath '$ORIGIN' "$lib"
-            fi
+# Verify all shared libraries have correct RPATH
+for lib in ${PREFIX}/${targetsDir}/lib/*.so*; do
+    if [[ -f "$lib" && "$lib" =~ \.so ]]; then
+        rpath=$(patchelf --print-rpath "$lib" 2>/dev/null || echo "No RPATH")
+        if [[ "$rpath" != "$ORIGIN" ]]; then
+            echo "WARNING: $(basename "$lib") has incorrect RPATH: $rpath"
+            echo "Attempting to fix..."
+            patchelf --remove-rpath "$lib"
+            patchelf --set-rpath '$ORIGIN' "$lib"
         fi
-    done
-fi
+    fi
+done
