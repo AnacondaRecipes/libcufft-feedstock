@@ -39,6 +39,7 @@ outputs:
       - targets/{{ target_name }}/lib/libcufft*.so.*  # [linux]
       - Library\bin\cufft*64_*.dll                    # [win]
     build:
+      binary_relocation: false
       # Repacked binaries on linux aarch64 have flag DT_TLSDESC (GNU_HASH),
       # which is not supported by LIEF and can raise ValueError during
       # overlinking checks. Ignore all cuFFT shared objects for overlinking checks.
