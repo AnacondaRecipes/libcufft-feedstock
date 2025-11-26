@@ -2,11 +2,9 @@
 {% set version = "12.0.0.61" %}
 {% set cuda_version = "13.0" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
-{% set platform = "linux-ppc64le" %}  # [ppc64le]
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set platform = "windows-x86_64" %}  # [win]
 {% set target_name = "x86_64-linux" %}  # [linux64]
-{% set target_name = "ppc64le-linux" %}  # [ppc64le]
 {% set target_name = "sbsa-linux" %}  # [aarch64]
 {% set target_name = "x64" %}  # [win]
 {% set extension = "tar.xz" %}  # [not win]
@@ -25,7 +23,7 @@ source:
 build:
   number: 0
   binary_relocation: false
-  skip: true  # [osx or ppc64le]
+  skip: true  # [osx]
 
 requirements:
   build:
@@ -56,6 +54,9 @@ outputs:
       # have the correct $ORIGIN rpath for runtime compatibility.
       runpath_whitelist:  # [linux]
         - $ORIGIN  # [linux]
+      missing_dso_whitelist:
+        # Needed for rpath issues with conda-build and use of --error-overlinking command-line argument
+        - '$RPATH/libgcc_s.so.1'  # [linux]
     requirements:
       build:
         - {{ compiler("c") }}
@@ -94,6 +95,7 @@ outputs:
       description: |
         The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
       doc_url: https://docs.nvidia.com/cuda/cufft/
+      dev_url: https://docs.nvidia.com/cuda/cufft/
 
   - name: libcufft-dev
     build:
@@ -165,6 +167,7 @@ outputs:
       description: |
         The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
       doc_url: https://docs.nvidia.com/cuda/cufft/
+      dev_url: https://docs.nvidia.com/cuda/cufft/
 
   - name: libcufft-static
     # cuFFT does not ship `*_static.lib` on Windows so only relevant on linux
@@ -197,7 +200,7 @@ outputs:
       description: |
         The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
       doc_url: https://docs.nvidia.com/cuda/cufft/
-
+      dev_url: https://docs.nvidia.com/cuda/cufft/
 
 about:
   home: https://developer.nvidia.com/cufft
@@ -208,7 +211,10 @@ about:
   description: |
     The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
   doc_url: https://docs.nvidia.com/cuda/cufft/
+  dev_url: https://docs.nvidia.com/cuda/cufft/
 
 extra:
+  skip-lints:
+    - license_file_overspecified
   recipe-maintainers:
     - conda-forge/cuda
