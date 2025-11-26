@@ -1,5 +1,5 @@
-About libcufft-feedstock
-========================
+About libcufft-split-feedstock
+==============================
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/libcufft-feedstock/blob/main/LICENSE.txt)
 
@@ -69,10 +69,10 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libcufft--dev-green.svg)](https://anaconda.org/conda-forge/libcufft-dev) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libcufft-dev.svg)](https://anaconda.org/conda-forge/libcufft-dev) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libcufft-dev.svg)](https://anaconda.org/conda-forge/libcufft-dev) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libcufft-dev.svg)](https://anaconda.org/conda-forge/libcufft-dev) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libcufft--static-green.svg)](https://anaconda.org/conda-forge/libcufft-static) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libcufft-static.svg)](https://anaconda.org/conda-forge/libcufft-static) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libcufft-static.svg)](https://anaconda.org/conda-forge/libcufft-static) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libcufft-static.svg)](https://anaconda.org/conda-forge/libcufft-static) |
 
-Installing libcufft
-===================
+Installing libcufft-split
+=========================
 
-Installing `libcufft` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
+Installing `libcufft-split` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
 
 ```
 conda config --add channels conda-forge
@@ -158,17 +158,17 @@ Terminology
                   produce the finished article (built conda distributions)
 
 
-Updating libcufft-feedstock
-===========================
+Updating libcufft-split-feedstock
+=================================
 
-If you would like to improve the libcufft recipe or build a new
+If you would like to improve the libcufft-split recipe or build a new
 package version, please fork this repository and submit a PR. Upon submission,
 your changes will be run on the appropriate platforms to give the reviewer an
 opportunity to confirm that the changes result in a successful build. Once
 merged, the recipe will be re-built and uploaded automatically to the
 `conda-forge` channel, whereupon the built conda packages will be available for
 everybody to install and use from the `conda-forge` channel.
-Note that all branches in the conda-forge/libcufft-feedstock are
+Note that all branches in the conda-forge/libcufft-split-feedstock are
 immediately built and any created packages are uploaded, so PRs should be based
 on branches in forks and branches in the main repository should only be used to
 build distinct package versions.
