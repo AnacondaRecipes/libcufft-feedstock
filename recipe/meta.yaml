@@ -56,7 +56,7 @@ outputs:
         - $ORIGIN  # [linux]
       missing_dso_whitelist:
         # Needed for rpath issues with conda-build and use of --error-overlinking command-line argument
-        - '$RPATH/libgcc_s.so.1'  # [linux]
+        - '*libgcc_s.so.*'  # [linux]
     requirements:
       build:
         - {{ compiler("c") }}
@@ -91,6 +91,7 @@ outputs:
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_file: LICENSE
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: cuFFT native runtime libraries
       description: |
         The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
@@ -163,6 +164,7 @@ outputs:
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_file: LICENSE
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: cuFFT native runtime libraries
       description: |
         The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
@@ -196,6 +198,7 @@ outputs:
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_file: LICENSE
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: cuFFT native runtime libraries
       description: |
         The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
@@ -207,6 +210,7 @@ about:
   license: LicenseRef-NVIDIA-End-User-License-Agreement
   license_file: LICENSE
   license_url: https://docs.nvidia.com/cuda/eula/index.html
+  license_family: Other
   summary: cuFFT native runtime libraries
   description: |
     The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
@@ -214,7 +218,5 @@ about:
   dev_url: https://docs.nvidia.com/cuda/cufft/
 
 extra:
-  skip-lints:
-    - license_file_overspecified
   recipe-maintainers:
     - conda-forge/cuda
