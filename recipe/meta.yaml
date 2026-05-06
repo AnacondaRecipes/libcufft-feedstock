@@ -1,6 +1,6 @@
 {% set name = "libcufft" %}
-{% set version = "12.1.0.78" %}
-{% set cuda_version = "13.1" %}
+{% set version = "12.2.0.46" %}
+{% set cuda_version = "13.2" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set platform = "windows-x86_64" %}  # [win]
@@ -16,9 +16,9 @@ package:
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
-  sha256: 336732ded69b9f7f5cdca3e7e942732f1446933f2dccaf563c84b5caf058ad75  # [linux64]
-  sha256: 66302c6927af275515c5bd68275250f7c6e47521938c4d77318c7cba1f8715c6  # [aarch64]
-  sha256: b0a3df65c6ce60dc1aa695f47159a26d5172ac7411045abaeea2fbe948a42746  # [win]
+  sha256: ad001666bce5986cf0244d7795b6ba0164f30a5d4b1b82bbcc5a8d60af05a8b5  # [linux64]
+  sha256: 8a7b6c1087e640bb072d91cb31c0f8bb9b5b3e7460230c1ecda64ceed3c65776  # [aarch64]
+  sha256: 905cac4d62038f5fe0a2e12f0b6df6fa5ba2341bc34f7f2bf393edb01fe4128b  # [win]
 
 build:
   number: 0
@@ -56,7 +56,7 @@ outputs:
         - $ORIGIN  # [linux]
       missing_dso_whitelist:
         # Needed for rpath issues with conda-build and use of --error-overlinking command-line argument
-        - '$RPATH/libgcc_s.so.1'  # [linux]
+        - '*libgcc_s.so.*'  # [linux]
     requirements:
       build:
         - {{ compiler("c") }}
@@ -91,6 +91,7 @@ outputs:
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_file: LICENSE
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: cuFFT native runtime libraries
       description: |
         The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
@@ -163,6 +164,7 @@ outputs:
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_file: LICENSE
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: cuFFT native runtime libraries
       description: |
         The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
@@ -196,6 +198,7 @@ outputs:
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_file: LICENSE
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: cuFFT native runtime libraries
       description: |
         The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
@@ -207,6 +210,7 @@ about:
   license: LicenseRef-NVIDIA-End-User-License-Agreement
   license_file: LICENSE
   license_url: https://docs.nvidia.com/cuda/eula/index.html
+  license_family: Other
   summary: cuFFT native runtime libraries
   description: |
     The cuFFT library provides GPU-accelerated Fast Fourier Transform (FFT) implementations.
@@ -214,7 +218,5 @@ about:
   dev_url: https://docs.nvidia.com/cuda/cufft/
 
 extra:
-  skip-lints:
-    - license_file_overspecified
   recipe-maintainers:
     - conda-forge/cuda
