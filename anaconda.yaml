@@ -3,3 +3,7 @@ upstream_sources:
   - webpage:
       url: https://api.anaconda.org/package/conda-forge/libcufft
       regex: '"version":\s*"([^"]+)"'
+    packages:
+      - libcufft
+      - libcufft-dev
+      - libcufft-static
