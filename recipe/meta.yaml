@@ -218,5 +218,7 @@ about:
   dev_url: https://docs.nvidia.com/cuda/cufft/
 
 extra:
+  skip-lints:
+    - deprecate_license_url
   recipe-maintainers:
     - conda-forge/cuda
