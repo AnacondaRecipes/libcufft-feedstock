@@ -1,14 +1,20 @@
 {% set name = "libcufft" %}
-{% set version = "12.3.0.29" %}
-{% set cuda_version = "13.3" %}
+{% set version = "12.4.0.34" %}
+{% set cuda_version = "13.4" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
-{% set platform = "windows-x86_64" %}  # [win]
+{% set platform = "windows-x86_64" %}  # [win64]
+{% set platform = "windows-arm64" %}  # [win and arm64]
 {% set target_name = "x86_64-linux" %}  # [linux64]
 {% set target_name = "sbsa-linux" %}  # [aarch64]
-{% set target_name = "x64" %}  # [win]
+{% set target_name = "x64" %}  # [win64]
+{% set target_name = "arm64" %}  # [win and arm64]
 {% set extension = "tar.xz" %}  # [not win]
 {% set extension = "zip" %}  # [win]
+{% set sha256 = "8c55942458475fb06f0b8592d3080a0cf3d488aa25273771f4dbb674771c14fd" %}  # [linux64]
+{% set sha256 = "e47734b608f267a5a9d892d12eede9c48c69a47960e859ca23268fc9a86e756e" %}  # [aarch64]
+{% set sha256 = "969cc31f4eae4fcb41a14b38c7c095fe925aed5af77ed283d487757e7a5367d9" %}  # [win64]
+{% set sha256 = "f5f9d4cba3c9626fc504a0bd8daadbcaba35e04ecb7127d3b36370577e820733" %}  # [win and arm64]
 
 package:
   name: {{ name|lower }}-split
@@ -16,9 +22,7 @@ package:
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
-  sha256: b2404952a5d630fbbc13e12d36975ef87a9c05c71c321c2cb5b3820789e47462  # [linux64]
-  sha256: 59cab9753d0e025b9bfebda843555b1bbf99d9ea2d4a8eaa87a1185610b068e4  # [aarch64]
-  sha256: 83df908ae67e2b3a86201de8463562ab49dd9ee8b3b5efc3fdc2e681b14b5dd9  # [win]
+  sha256: {{ sha256 }}
 
 build:
   number: 0
@@ -218,5 +222,7 @@ about:
   dev_url: https://docs.nvidia.com/cuda/cufft/
 
 extra:
+  skip-lints:
+    - deprecate_license_url
   recipe-maintainers:
     - conda-forge/cuda
