@@ -1,5 +1,5 @@
 {% set name = "libcufft" %}
-{% set version = "12.4.0.34" %}
+{% set version = "12.4.0.43" %}
 {% set cuda_version = "13.4" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
@@ -11,10 +11,10 @@
 {% set target_name = "arm64" %}  # [win and arm64]
 {% set extension = "tar.xz" %}  # [not win]
 {% set extension = "zip" %}  # [win]
-{% set sha256 = "8c55942458475fb06f0b8592d3080a0cf3d488aa25273771f4dbb674771c14fd" %}  # [linux64]
-{% set sha256 = "e47734b608f267a5a9d892d12eede9c48c69a47960e859ca23268fc9a86e756e" %}  # [aarch64]
-{% set sha256 = "969cc31f4eae4fcb41a14b38c7c095fe925aed5af77ed283d487757e7a5367d9" %}  # [win64]
-{% set sha256 = "f5f9d4cba3c9626fc504a0bd8daadbcaba35e04ecb7127d3b36370577e820733" %}  # [win and arm64]
+{% set sha256 = "f7f8ac2cc67714989a3c8140cda39b1b7ed7d462a491e1ad3f53adb777f5070f" %}  # [linux64]
+{% set sha256 = "c62ea864ae7777e095463d10130d99e6d34995b996cda5f3d013c57bead7a574" %}  # [aarch64]
+{% set sha256 = "69d0ad8dc3a1be66f01a748a8206d0ceaafa56939474663fbe790dc3e91d2009" %}  # [win64]
+{% set sha256 = "166c034d030572365d34862aafd85a7b5ecf443518e0ddae855b6df1cd9e46cf" %}  # [win and arm64]
 
 package:
   name: {{ name|lower }}-split
