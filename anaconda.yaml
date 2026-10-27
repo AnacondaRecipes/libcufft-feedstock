@@ -7,3 +7,13 @@ upstream_sources:
       - libcufft
       - libcufft-dev
       - libcufft-static
+  - webpage:
+      url: https://api.anaconda.org/package/conda-forge/libcufft
+      regex: '"version":\s*"(13\.2(?:\.\d+)*)"'
+    feedstock_branch: '13.2'
+    version_matchspec: '>=13.2,<13.3'
+    supported: true
+    packages:
+      - libcufft
+      - libcufft-dev
+      - libcufft-static
